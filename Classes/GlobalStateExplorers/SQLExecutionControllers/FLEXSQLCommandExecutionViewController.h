@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FLEXSQLiteDatabaseManager.h"
 
 @interface FLEXSQLCommandExecutionViewController: UIViewController
     @property (nonatomic) BOOL isSelectionType;
-    @property (nonatomic, copy) NSString *sql;
+    @property (nonatomic) FLEXSQLiteDatabaseManager* dbManager;
 @end

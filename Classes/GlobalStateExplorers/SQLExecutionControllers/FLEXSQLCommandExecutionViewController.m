@@ -7,25 +7,25 @@
 //
 
 #import "FLEXSQLCommandExecutionViewController.h"
-#import "FLEXObjectExplorerViewController.h"
+#import "FLEXSQLiteDatabaseManager.h"
 #import "FLEXObjectExplorerFactory.h"
+#import "FLEXTableListViewController.h"
 #import "FLEXUtility.h"
 #import <objc/runtime.h>
 
 @interface FLEXSQLCommandExecutionViewController ()
-    @property (nonatomic) UITextView *textView;
-    @property (nonatomic) UIButton *submitButton;
-    @property (nonatomic) UILabel *statusLabel;
-    @end
+    @property (nonatomic) UITextView* textView;
+    @property (nonatomic) UIButton* submitButton;
+    @property (nonatomic) UILabel* statusLabel;
+@end
 
 @implementation FLEXSQLCommandExecutionViewController
-    @synthesize isSelectionType, sql, textView, submitButton, statusLabel;
+    @synthesize isSelectionType, dbManager, textView, submitButton, statusLabel;
     
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.navigationItem.title = isSelectionType ? @"Select with SQL" : @"Execute SQL";
-    
     [self.view addObserver:self forKeyPath:@"frame" options:0 context:NULL];
     
     [self addOtherUIElementsAndPositionThem];
@@ -38,7 +38,7 @@
 - (void)addOtherUIElementsAndPositionThem {
     if(textView == nil) {
         textView = [UITextView new];
-        textView.backgroundColor = [UIColor lightGrayColor];
+        textView.backgroundColor = [UIColor colorWithWhite: 0.9 alpha: 1.0];
         textView.textColor = [UIColor blackColor];
         
         [self.view addSubview: textView];
@@ -48,7 +48,7 @@
         submitButton = [UIButton new];
         
         [submitButton setTitleColor:[UIColor blueColor] forState: UIControlStateNormal];
-        [submitButton setBackgroundColor: [UIColor lightGrayColor]];
+        [submitButton setBackgroundColor: [UIColor colorWithWhite: 0.9 alpha: 1.0]];
         
         [submitButton setTitle: @"Submit" forState: UIControlStateNormal];
         [submitButton addTarget: self action:@selector(submitPressed) forControlEvents: UIControlEventTouchUpInside];
@@ -69,7 +69,7 @@
     CGFloat width = self.view.frame.size.width - sideMargin * 2;
     CGFloat startingY = self.navigationController.navigationBar.frame.size.height + sideMargin;
     CGFloat submitButtonHeight = 50;
-    CGFloat statusLabelHeight = 100;
+    CGFloat statusLabelHeight = 70;
     CGFloat textViewHeight = self.view.frame.size.height - startingY - submitButtonHeight - statusLabelHeight - sideMargin * 4;
     
     textView.frame = CGRectMake(sideMargin, startingY + sideMargin, width, textViewHeight);
@@ -78,6 +78,15 @@
 }
     
 - (void)submitPressed {
-    
+    if (isSelectionType) {
+        //    - (NSArray<NSDictionary<NSString *, id> *> *)executeSelectionQuery:(NSString *)sql;
+
+    } else {
+        NSLog(textView.text);
+        
+        bool result = [self.dbManager executeNonSelectQuery: textView.text];
+        
+        statusLabel.text = result ? @"SUCCESS" : @"ERROR OCCURED";
+    }
 }
 @end

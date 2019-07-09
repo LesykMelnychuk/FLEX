@@ -62,6 +62,8 @@
 }
     
 - (IBAction)actionSelected {
+    FLEXSQLiteDatabaseManager* dbManager = _dbm;
+    
     UIAlertController *alertController = [UIAlertController
         alertControllerWithTitle: @"Select you option"
         message: nil
@@ -73,6 +75,7 @@
         style: UIAlertActionStyleDefault
         handler: ^(UIAlertAction *action) {
             FLEXSQLCommandExecutionViewController* controller = [FLEXSQLCommandExecutionViewController new];
+            controller.dbManager = dbManager;
             controller.isSelectionType = false;
             
             [self.navigationController pushViewController:controller animated: true];
@@ -84,6 +87,7 @@
         style: UIAlertActionStyleDefault
         handler: ^(UIAlertAction *action) {
             FLEXSQLCommandExecutionViewController* controller = [FLEXSQLCommandExecutionViewController new];
+            controller.dbManager = dbManager;
             controller.isSelectionType = true;
             
             [self.navigationController pushViewController:controller animated: true];
