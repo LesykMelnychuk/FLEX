@@ -13,6 +13,7 @@
 #import "FLEXRealmDatabaseManager.h"
 
 #import "FLEXTableContentViewController.h"
+#import "FLEXSQLCommandExecutionViewController.h"
 
 @interface FLEXTableListViewController ()
 {
@@ -35,12 +36,90 @@
     if (self) {
         _databasePath = [path copy];
         _dbm = [self databaseManagerForFileAtPath:_databasePath];
-        [_dbm open];
-        [self getAllTables];
+        
+//        [self getAllTables];
     }
     return self;
 }
 
+- (void)viewWillAppear: (BOOL)animated {
+    [super viewWillAppear: animated];
+    
+    [_dbm open];
+    [self getAllTables];
+}
+    
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    UIBarButtonItem *flipButton = [
+        [UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCompose
+                                   target: self
+                                   action: @selector(actionSelected)
+    ];
+    
+    self.navigationItem.rightBarButtonItem = flipButton;
+}
+    
+- (IBAction)actionSelected {
+    FLEXSQLiteDatabaseManager* dbManager = _dbm;
+    
+    UIAlertController *alertController = [UIAlertController
+        alertControllerWithTitle: @"Select you option"
+        message: nil
+        preferredStyle: UIAlertControllerStyleActionSheet
+    ];
+    
+    UIAlertAction *executeAction = [UIAlertAction
+        actionWithTitle: @"Execute SQL"
+        style: UIAlertActionStyleDefault
+        handler: ^(UIAlertAction *action) {
+            FLEXSQLCommandExecutionViewController* controller = [FLEXSQLCommandExecutionViewController new];
+            controller.dbManager = dbManager;
+            controller.isSelectionType = false;
+            
+            [self.navigationController pushViewController:controller animated: true];
+        }
+    ];
+    
+    UIAlertAction *selectAction = [UIAlertAction
+        actionWithTitle: @"Select using SQL"
+        style: UIAlertActionStyleDefault
+        handler: ^(UIAlertAction *action) {
+            FLEXSQLCommandExecutionViewController* controller = [FLEXSQLCommandExecutionViewController new];
+            controller.dbManager = dbManager;
+            controller.isSelectionType = true;
+            
+            [self.navigationController pushViewController:controller animated: true];
+        }
+    ];
+
+    UIAlertAction *cancelAction = [UIAlertAction
+        actionWithTitle: @"Cancel"
+        style: UIAlertActionStyleCancel
+        handler: nil
+    ];
+    
+    [alertController addAction: executeAction];
+    [alertController addAction: selectAction];
+    [alertController addAction: cancelAction];
+    
+    if (alertController.popoverPresentationController != nil) {
+        // Remove arrow from action sheet.
+        [alertController.popoverPresentationController setPermittedArrowDirections:0];
+        
+        //For set action sheet to middle of view.
+        CGRect rect = self.view.frame;
+        rect.origin.x = self.view.frame.size.width / 20;
+        rect.origin.y = self.view.frame.size.height / 20;
+        
+        alertController.popoverPresentationController.sourceView = self.view;
+        alertController.popoverPresentationController.sourceRect = rect;
+    }
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+    
 - (id<FLEXDatabaseManager>)databaseManagerForFileAtPath:(NSString *)path
 {
     NSString *pathExtension = path.pathExtension.lowercaseString;
@@ -57,7 +136,7 @@
     
     return nil;
 }
-
+    
 - (void)getAllTables
 {
     NSArray<NSDictionary<NSString *, id> *> *resultArray = [_dbm queryAllTables];
