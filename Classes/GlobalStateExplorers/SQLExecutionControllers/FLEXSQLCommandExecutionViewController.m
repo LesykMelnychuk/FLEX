@@ -44,6 +44,10 @@
     [submitButton setTitle: @"Submit" forState: UIControlStateNormal];
     [submitButton addTarget: self action:@selector(submitPressed) forControlEvents: UIControlEventTouchUpInside];
     
+    [self.view addSubview: textView];
+    [self.view addSubview: submitButton];
+    [self.view addSubview: statusLabel];
+
     NSLayoutConstraint* submitButtonHeight = [NSLayoutConstraint constraintWithItem: submitButton attribute: NSLayoutAttributeHeight relatedBy: NSLayoutRelationEqual toItem: nil attribute: NSLayoutAttributeNotAnAttribute multiplier: 1.0 constant: 70];
     
     NSLayoutConstraint* statusLabelHeight = [NSLayoutConstraint constraintWithItem: statusLabel attribute: NSLayoutAttributeHeight relatedBy: NSLayoutRelationEqual toItem: nil attribute: NSLayoutAttributeNotAnAttribute multiplier: 1.0 constant: 100];
@@ -62,10 +66,6 @@
     for (NSLayoutConstraint* constraint in constraints) {
         [constraint setActive: TRUE];
     }
-    
-    [self.view addSubview: textView];
-    [self.view addSubview: submitButton];
-    [self.view addSubview: statusLabel];
 }
     
 - (void)submitPressed {
