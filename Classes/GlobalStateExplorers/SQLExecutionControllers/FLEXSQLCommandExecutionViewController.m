@@ -26,21 +26,42 @@
     
     self.navigationItem.title = isSelectionType ? @"Select with SQL" : @"Execute SQL";
     
-    [self addOtherUIElements];
+    [self.view addObserver:self forKeyPath:@"frame" options:0 context:NULL];
+    
+    [self addOtherUIElementsAndPositionThem];
 }
     
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    [self addOtherUIElementsAndPositionThem];
+}
     
-- (void)addOtherUIElements {
-    textView = [UITextView new];
-    submitButton = [UIButton new];
-    statusLabel = [UILabel new];
+- (void)addOtherUIElementsAndPositionThem {
+    if(textView == nil) {
+        textView = [UITextView new];
+        textView.backgroundColor = [UIColor lightGrayColor];
+        textView.textColor = [UIColor blackColor];
+        
+        [self.view addSubview: textView];
+    }
     
-    [submitButton setTitle: @"Submit" forState: UIControlStateNormal];
-    [submitButton addTarget: self action:@selector(submitPressed) forControlEvents: UIControlEventTouchUpInside];
+    if(submitButton == nil) {
+        submitButton = [UIButton new];
+        
+        [submitButton setTitleColor:[UIColor blueColor] forState: UIControlStateNormal];
+        [submitButton setBackgroundColor: [UIColor lightGrayColor]];
+        
+        [submitButton setTitle: @"Submit" forState: UIControlStateNormal];
+        [submitButton addTarget: self action:@selector(submitPressed) forControlEvents: UIControlEventTouchUpInside];
+        
+        [self.view addSubview: submitButton];
+    }
     
-    [self.view addSubview: textView];
-    [self.view addSubview: submitButton];
-    [self.view addSubview: statusLabel];
+    if(statusLabel == nil) {
+        statusLabel = [UILabel new];
+        
+        statusLabel.textColor = [UIColor blackColor];
+        [self.view addSubview: statusLabel];
+    }
     
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -49,14 +70,14 @@
     CGFloat startingY = self.navigationController.navigationBar.frame.size.height + sideMargin;
     CGFloat submitButtonHeight = 50;
     CGFloat statusLabelHeight = 100;
-    CGFloat textViewHeight = self.view.frame.size.height - startingY - submitButtonHeight - statusLabelHeight - sideMargin * 3;
+    CGFloat textViewHeight = self.view.frame.size.height - startingY - submitButtonHeight - statusLabelHeight - sideMargin * 4;
     
     textView.frame = CGRectMake(sideMargin, startingY + sideMargin, width, textViewHeight);
-    statusLabel.frame = CGRectMake(sideMargin, textView.frame.origin.y + sideMargin, width, statusLabelHeight);
-    submitButton.frame = CGRectMake(sideMargin, statusLabel.frame.origin.y + sideMargin, width, submitButtonHeight);
+    statusLabel.frame = CGRectMake(sideMargin, textView.frame.origin.y + textViewHeight + sideMargin, width, statusLabelHeight);
+    submitButton.frame = CGRectMake(sideMargin, statusLabel.frame.origin.y + statusLabelHeight + sideMargin, width, submitButtonHeight);
 }
     
 - (void)submitPressed {
     
 }
-    @end
+@end
