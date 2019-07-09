@@ -16,15 +16,14 @@
     @property (nonatomic) UITextView *textView;
     @property (nonatomic) UIButton *submitButton;
     @property (nonatomic) UILabel *statusLabel;
-@end
+    @end
 
 @implementation FLEXSQLCommandExecutionViewController
     @synthesize isSelectionType, sql, textView, submitButton, statusLabel;
     
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.view.backgroundColor = [UIColor whiteColor];
+    
     self.navigationItem.title = isSelectionType ? @"Select with SQL" : @"Execute SQL";
     
     [self addOtherUIElements];
@@ -36,39 +35,28 @@
     submitButton = [UIButton new];
     statusLabel = [UILabel new];
     
-    self.view.translatesAutoresizingMaskIntoConstraints = false;
-    textView.translatesAutoresizingMaskIntoConstraints = false;
-    submitButton.translatesAutoresizingMaskIntoConstraints = false;
-    statusLabel.translatesAutoresizingMaskIntoConstraints = false;
-    
     [submitButton setTitle: @"Submit" forState: UIControlStateNormal];
     [submitButton addTarget: self action:@selector(submitPressed) forControlEvents: UIControlEventTouchUpInside];
     
     [self.view addSubview: textView];
     [self.view addSubview: submitButton];
     [self.view addSubview: statusLabel];
-
-    NSLayoutConstraint* submitButtonHeight = [NSLayoutConstraint constraintWithItem: submitButton attribute: NSLayoutAttributeHeight relatedBy: NSLayoutRelationEqual toItem: nil attribute: NSLayoutAttributeNotAnAttribute multiplier: 1.0 constant: 70];
     
-    NSLayoutConstraint* statusLabelHeight = [NSLayoutConstraint constraintWithItem: statusLabel attribute: NSLayoutAttributeHeight relatedBy: NSLayoutRelationEqual toItem: nil attribute: NSLayoutAttributeNotAnAttribute multiplier: 1.0 constant: 100];
+    self.view.backgroundColor = [UIColor whiteColor];
     
+    CGFloat sideMargin = 20;
+    CGFloat width = self.view.frame.size.width - sideMargin * 2;
+    CGFloat startingY = self.navigationController.navigationBar.frame.size.height + sideMargin;
+    CGFloat submitButtonHeight = 50;
+    CGFloat statusLabelHeight = 100;
+    CGFloat textViewHeight = self.view.frame.size.height - startingY - submitButtonHeight - statusLabelHeight - sideMargin * 3;
     
-    NSLayoutConstraint* textViewTopConstraint = [NSLayoutConstraint constraintWithItem: textView attribute: NSLayoutAttributeTopMargin relatedBy: NSLayoutRelationEqual toItem: self.view attribute: NSLayoutAttributeTopMargin multiplier: 1.0 constant: 0];
-    NSLayoutConstraint* textViewLeftConstraint = [NSLayoutConstraint constraintWithItem: textView attribute: NSLayoutAttributeLeftMargin relatedBy: NSLayoutRelationEqual toItem: self.view attribute: NSLayoutAttributeLeftMargin multiplier: 1.0 constant: 0];
-    NSLayoutConstraint* textViewRightConstraint = [NSLayoutConstraint constraintWithItem: textView attribute: NSLayoutAttributeRightMargin relatedBy: NSLayoutRelationEqual toItem: self.view attribute: NSLayoutAttributeRightMargin multiplier: 1.0 constant: 0];
-
-    NSLayoutConstraint* textViewBottomConstraint = [NSLayoutConstraint constraintWithItem: textView attribute: NSLayoutAttributeBottom relatedBy: NSLayoutRelationEqual toItem: statusLabel attribute: NSLayoutAttributeTop multiplier: 1.0 constant: 0];
-    NSLayoutConstraint* statusLabelBottomConstraint = [NSLayoutConstraint constraintWithItem: statusLabel attribute: NSLayoutAttributeBottom relatedBy: NSLayoutRelationEqual toItem: submitButton attribute: NSLayoutAttributeTop multiplier: 1.0 constant: 0];
-    NSLayoutConstraint* submitButtonBottomConstraint = [NSLayoutConstraint constraintWithItem: submitButton attribute: NSLayoutAttributeBottom relatedBy: NSLayoutRelationEqual toItem: self.view attribute: NSLayoutAttributeBottomMargin multiplier: 1.0 constant: 0];
-
-    NSArray* constraints = @[submitButtonHeight, statusLabelHeight, textViewTopConstraint, textViewLeftConstraint, textViewRightConstraint, textViewBottomConstraint, statusLabelBottomConstraint, submitButtonBottomConstraint];
-
-    for (NSLayoutConstraint* constraint in constraints) {
-        [constraint setActive: TRUE];
-    }
+    textView.frame = CGRectMake(sideMargin, startingY + sideMargin, width, textViewHeight);
+    statusLabel.frame = CGRectMake(sideMargin, textView.frame.origin.y + sideMargin, width, statusLabelHeight);
+    submitButton.frame = CGRectMake(sideMargin, statusLabel.frame.origin.y + sideMargin, width, submitButtonHeight);
 }
     
 - (void)submitPressed {
     
 }
-@end
+    @end
