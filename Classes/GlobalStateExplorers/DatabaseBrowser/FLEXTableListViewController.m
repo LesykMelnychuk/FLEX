@@ -52,7 +52,7 @@
     [super viewDidLoad];
     
     UIBarButtonItem *flipButton = [
-        [UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAction
+        [UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCompose
                                    target: self
                                    action: @selector(actionSelected)
     ];
@@ -77,7 +77,7 @@
     
     UIAlertAction *selectAction = [UIAlertAction
         actionWithTitle: @"Select using SQL"
-        style: UIAlertActionStyleCancel
+        style: UIAlertActionStyleDefault
         handler: ^(UIAlertAction *action) {
         
         }
