@@ -36,11 +36,81 @@
         _databasePath = [path copy];
         _dbm = [self databaseManagerForFileAtPath:_databasePath];
         [_dbm open];
-        [self getAllTables];
+        
+//        [self getAllTables];
     }
     return self;
 }
 
+- (void) viewWillAppear: (BOOL)animated {
+    [super viewWillAppear: animated];
+    
+    [self getAllTables];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    UIBarButtonItem *flipButton = [
+        [UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAction
+                                   target: self
+                                   action: @selector(actionSelected)
+    ];
+    
+    self.navigationItem.rightBarButtonItem = flipButton;
+}
+    
+- (IBAction)actionSelected {
+    UIAlertController *alertController = [UIAlertController
+        alertControllerWithTitle: @"Select you option:"
+        message: nil
+        preferredStyle: UIAlertControllerStyleActionSheet
+    ];
+    
+    UIAlertAction *executeAction = [UIAlertAction
+        actionWithTitle: @"Execution SQL"
+        style: UIAlertActionStyleDefault
+        handler: ^(UIAlertAction *action) {
+            
+        }
+    ];
+    
+    UIAlertAction *selectAction = [UIAlertAction
+        actionWithTitle: @"Select using SQL"
+        style: UIAlertActionStyleCancel
+        handler: ^(UIAlertAction *action) {
+        
+        }
+    ];
+
+    UIAlertAction *cancelAction = [UIAlertAction
+        actionWithTitle: @"Cancel"
+        style: UIAlertActionStyleCancel
+        handler: ^(UIAlertAction *action) {
+            
+        }
+    ];
+    
+    [alertController addAction: executeAction];
+    [alertController addAction: selectAction];
+    [alertController addAction: cancelAction];
+    
+    if (alertController.popoverPresentationController != nil) {
+        // Remove arrow from action sheet.
+        [alertController.popoverPresentationController setPermittedArrowDirections:0];
+        
+        //For set action sheet to middle of view.
+        CGRect rect = self.view.frame;
+        rect.origin.x = self.view.frame.size.width / 20;
+        rect.origin.y = self.view.frame.size.height / 20;
+        
+        alertController.popoverPresentationController.sourceView = self.view;
+        alertController.popoverPresentationController.sourceRect = rect;
+    }
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+    
 - (id<FLEXDatabaseManager>)databaseManagerForFileAtPath:(NSString *)path
 {
     NSString *pathExtension = path.pathExtension.lowercaseString;
@@ -57,7 +127,7 @@
     
     return nil;
 }
-
+    
 - (void)getAllTables
 {
     NSArray<NSDictionary<NSString *, id> *> *resultArray = [_dbm queryAllTables];
