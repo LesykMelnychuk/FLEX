@@ -109,6 +109,24 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
     return [self executeQuery:sql];
 }
 
+- (BOOL)executeNonSelectQuery:(NSString *)sql
+{
+    [self open];
+    
+    sqlite3_stmt *pstmt;
+    
+    BOOL result = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pstmt, 0) == SQLITE_OK;
+    [self close];
+    
+    return result;
+}
+
+- (NSArray<NSDictionary<NSString *, id> *> *)executeSelectionQuery: (NSString *)sql
+{
+    return [self executeQuery: sql];
+}
+
+    
 #pragma mark -
 #pragma mark - Private
 

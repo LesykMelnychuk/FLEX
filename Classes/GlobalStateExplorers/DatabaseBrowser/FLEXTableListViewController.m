@@ -13,6 +13,7 @@
 #import "FLEXRealmDatabaseManager.h"
 
 #import "FLEXTableContentViewController.h"
+#import "FLEXSQLCommandExecutionViewController.h"
 
 @interface FLEXTableListViewController ()
 {
@@ -35,19 +36,19 @@
     if (self) {
         _databasePath = [path copy];
         _dbm = [self databaseManagerForFileAtPath:_databasePath];
-        [_dbm open];
         
 //        [self getAllTables];
     }
     return self;
 }
 
-- (void) viewWillAppear: (BOOL)animated {
+- (void)viewWillAppear: (BOOL)animated {
     [super viewWillAppear: animated];
     
+    [_dbm open];
     [self getAllTables];
 }
-
+    
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -62,16 +63,19 @@
     
 - (IBAction)actionSelected {
     UIAlertController *alertController = [UIAlertController
-        alertControllerWithTitle: @"Select you option:"
+        alertControllerWithTitle: @"Select you option"
         message: nil
         preferredStyle: UIAlertControllerStyleActionSheet
     ];
     
     UIAlertAction *executeAction = [UIAlertAction
-        actionWithTitle: @"Execution SQL"
+        actionWithTitle: @"Execute SQL"
         style: UIAlertActionStyleDefault
         handler: ^(UIAlertAction *action) {
+            FLEXSQLCommandExecutionViewController* controller = [FLEXSQLCommandExecutionViewController new];
+            controller.isSelectionType = false;
             
+            [self.navigationController pushViewController:controller animated: true];
         }
     ];
     
@@ -79,16 +83,17 @@
         actionWithTitle: @"Select using SQL"
         style: UIAlertActionStyleDefault
         handler: ^(UIAlertAction *action) {
-        
+            FLEXSQLCommandExecutionViewController* controller = [FLEXSQLCommandExecutionViewController new];
+            controller.isSelectionType = true;
+            
+            [self.navigationController pushViewController:controller animated: true];
         }
     ];
 
     UIAlertAction *cancelAction = [UIAlertAction
         actionWithTitle: @"Cancel"
         style: UIAlertActionStyleCancel
-        handler: ^(UIAlertAction *action) {
-            
-        }
+        handler: nil
     ];
     
     [alertController addAction: executeAction];

@@ -166,6 +166,7 @@
 		94AAF0381BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 94AAF0361BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		94AAF0391BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94AAF0371BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.m */; };
 		94AAF03A1BAF2F0300DE8760 /* FLEXKeyboardShortcutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 942DCD821BAE0AD300DB5DC2 /* FLEXKeyboardShortcutManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		A7A32CA022D4B00300EDE32C /* FLEXSQLCommandExecutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A32C9F22D4B00300EDE32C /* FLEXSQLCommandExecutionViewController.m */; };
 		C309B82F223ED64400B228EC /* FLEXLogController.h in Headers */ = {isa = PBXBuildFile; fileRef = C309B82D223ED64400B228EC /* FLEXLogController.h */; };
 		C33E46AF223B02CD004BD0E6 /* FLEXASLLogController.h in Headers */ = {isa = PBXBuildFile; fileRef = C33E46AD223B02CD004BD0E6 /* FLEXASLLogController.h */; };
 		C33E46B0223B02CD004BD0E6 /* FLEXASLLogController.m in Sources */ = {isa = PBXBuildFile; fileRef = C33E46AE223B02CD004BD0E6 /* FLEXASLLogController.m */; };
@@ -365,6 +366,8 @@
 		94A515241C4CA2080063292F /* FLEXToolbarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLEXToolbarItem.m; path = Classes/Toolbar/FLEXToolbarItem.m; sourceTree = SOURCE_ROOT; };
 		94AAF0361BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLEXKeyboardHelpViewController.h; sourceTree = "<group>"; };
 		94AAF0371BAF2E1F00DE8760 /* FLEXKeyboardHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLEXKeyboardHelpViewController.m; sourceTree = "<group>"; };
+		A7A32C9F22D4B00300EDE32C /* FLEXSQLCommandExecutionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLEXSQLCommandExecutionViewController.m; sourceTree = "<group>"; };
+		A7A32CA122D4B11300EDE32C /* FLEXSQLCommandExecutionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXSQLCommandExecutionViewController.h; sourceTree = "<group>"; };
 		C309B82D223ED64400B228EC /* FLEXLogController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXLogController.h; sourceTree = "<group>"; };
 		C33E46AD223B02CD004BD0E6 /* FLEXASLLogController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLEXASLLogController.h; sourceTree = "<group>"; };
 		C33E46AE223B02CD004BD0E6 /* FLEXASLLogController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLEXASLLogController.m; sourceTree = "<group>"; };
@@ -586,6 +589,7 @@
 			children = (
 				779B1EBF1C0C4D7C001F5E49 /* DatabaseBrowser */,
 				3A4C94AD1B5B21410088C3F2 /* SystemLog */,
+				A7A32C9E22D4AF9600EDE32C /* SQLExecutionControllers */,
 				3A4C949B1B5B21410088C3F2 /* FLEXClassesTableViewController.h */,
 				3A4C949C1B5B21410088C3F2 /* FLEXClassesTableViewController.m */,
 				3A4C949D1B5B21410088C3F2 /* FLEXFileBrowserFileOperationController.h */,
@@ -716,6 +720,15 @@
 				94A5151C1C4CA1F10063292F /* FLEXWindow.m */,
 			);
 			name = ExplorerInterface;
+			sourceTree = "<group>";
+		};
+		A7A32C9E22D4AF9600EDE32C /* SQLExecutionControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A7A32CA122D4B11300EDE32C /* FLEXSQLCommandExecutionViewController.h */,
+				A7A32C9F22D4B00300EDE32C /* FLEXSQLCommandExecutionViewController.m */,
+			);
+			path = SQLExecutionControllers;
 			sourceTree = "<group>";
 		};
 		C3F31D3A2267D883003C991A /* Views */ = {
@@ -1034,6 +1047,7 @@
 				3A4C94EA1B5B21410088C3F2 /* FLEXHierarchyTableViewController.m in Sources */,
 				3A4C95331B5B21410088C3F2 /* FLEXSystemLogTableViewCell.m in Sources */,
 				C3DB9F652107FC9600B46809 /* FLEXObjectRef.m in Sources */,
+				A7A32CA022D4B00300EDE32C /* FLEXSQLCommandExecutionViewController.m in Sources */,
 				3A4C95021B5B21410088C3F2 /* FLEXArgumentInputTextView.m in Sources */,
 				94A515261C4CA2080063292F /* FLEXExplorerToolbar.m in Sources */,
 				3A4C94FA1B5B21410088C3F2 /* FLEXArgumentInputNumberView.m in Sources */,
