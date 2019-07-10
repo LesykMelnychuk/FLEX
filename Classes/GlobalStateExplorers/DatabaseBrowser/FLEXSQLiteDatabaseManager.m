@@ -148,7 +148,7 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
     } else {
         [self close];
 
-        return nil
+        return nil;
     }
     
     [self close];
