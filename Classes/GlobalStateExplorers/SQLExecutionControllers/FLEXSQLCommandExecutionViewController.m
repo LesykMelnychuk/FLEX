@@ -60,6 +60,7 @@
     if(statusLabel == nil) {
         statusLabel = [UILabel new];
         
+        statusLabel.textAlignment = NSTextAlignmentCenter;
         statusLabel.textColor = [UIColor blackColor];
         [self.view addSubview: statusLabel];
     }
@@ -86,7 +87,7 @@
         NSArray<NSDictionary<NSString *, id> *> *responce = [self.dbManager executeSelectionQuery: text and: &errorString];
         
         if (responce == nil) {
-            [self presentOnErrorAlert];
+            [self presentOnErrorAlert: errorString];
             return;
         }
         
@@ -116,11 +117,11 @@
 }
     
     
-- (void)presentOnErrorAlert
+- (void)presentOnErrorAlert: (NSString *)message
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@"SQL Execution error !!!"
-                                     message:@"Are You Sure In Entered SQL ?"
+                                     message: message
                                      preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction* okButton = [UIAlertAction
