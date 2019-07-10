@@ -11,6 +11,7 @@
 #import "FLEXObjectExplorerFactory.h"
 #import "FLEXTableListViewController.h"
 #import "FLEXUtility.h"
+#import "FLEXTableContentViewController.h"
 #import <objc/runtime.h>
 
 @interface FLEXSQLCommandExecutionViewController ()
@@ -78,15 +79,56 @@
 }
     
 - (void)submitPressed {
+    NSString* text = textView.text == nil ? @"" : textView.text;
+    
     if (isSelectionType) {
-        //    - (NSArray<NSDictionary<NSString *, id> *> *)executeSelectionQuery:(NSString *)sql;
-
+        NSArray<NSDictionary<NSString *, id> *> *responce = [self.dbManager executeSelectionQuery: text];
+        
+        if (responce == nil) {
+            [self presentOnErrorAlert];
+            return;
+        }
+        
+        NSMutableArray<NSString *> *tables = [NSMutableArray<NSString *> new];
+        
+        for (NSDictionary<NSString *, id> *dict in responce) {
+            NSString *columnName = (NSString *)dict[@"name"] ?: @"";
+            
+            [tables addObject:columnName];
+        }
+        
+        FLEXTableContentViewController *contentViewController = [[FLEXTableContentViewController alloc] init];
+         
+        contentViewController.contentsArray = [tables copy];
+        contentViewController.columnsArray = @[];
+         
+        contentViewController.title = @"Executed sql";
+        
+        [self.navigationController pushViewController:contentViewController animated:YES];
     } else {
         NSLog(textView.text);
         
-        bool result = [self.dbManager executeNonSelectQuery: textView.text];
+        bool result = [self.dbManager executeNonSelectQuery: text];
         
         statusLabel.text = result ? @"SUCCESS" : @"ERROR OCCURED";
     }
 }
+    
+    
+- (void)presentOnErrorAlert
+{
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"SQL Execution error !!!"
+                                     message:@"Are You Sure In Entered SQL ?"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okButton = [UIAlertAction
+                                    actionWithTitle:@"Ok"
+                                    style:UIAlertActionStyleDestructive
+                                    handler: nil];
+    
+        [alert addAction:okButton];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    
 @end
