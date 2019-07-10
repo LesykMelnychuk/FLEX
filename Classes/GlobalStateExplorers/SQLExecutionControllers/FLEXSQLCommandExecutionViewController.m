@@ -18,7 +18,7 @@
     @property (nonatomic) UITextView* textView;
     @property (nonatomic) UIButton* submitButton;
     @property (nonatomic) UILabel* statusLabel;
-@end
+    @end
 
 @implementation FLEXSQLCommandExecutionViewController
     @synthesize isSelectionType, dbManager, textView, submitButton, statusLabel;
@@ -92,16 +92,18 @@
         NSMutableArray<NSString *> *tables = [NSMutableArray<NSString *> new];
         
         for (NSDictionary<NSString *, id> *dict in responce) {
-            NSString *columnName = (NSString *)dict[@"name"] ?: @"";
-            
-            [tables addObject:columnName];
+            for (NSString *key in [dict allKeys]) {
+                if ([tables containsObject: key] == false) {
+                    [tables addObject: key];
+                }
+            }
         }
         
         FLEXTableContentViewController *contentViewController = [[FLEXTableContentViewController alloc] init];
-         
-        contentViewController.contentsArray = [tables copy];
-        contentViewController.columnsArray = @[];
-         
+        
+        contentViewController.contentsArray = responce;
+        contentViewController.columnsArray = [tables copy];
+        
         contentViewController.title = @"Executed sql";
         
         [self.navigationController pushViewController:contentViewController animated:YES];
@@ -116,19 +118,19 @@
     
     
 - (void)presentOnErrorAlert
-{
+    {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@"SQL Execution error !!!"
                                      message:@"Are You Sure In Entered SQL ?"
                                      preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction* okButton = [UIAlertAction
-                                    actionWithTitle:@"Ok"
-                                    style:UIAlertActionStyleDestructive
-                                    handler: nil];
-    
+                                   actionWithTitle:@"Ok"
+                                   style:UIAlertActionStyleDestructive
+                                   handler: nil];
+        
         [alert addAction:okButton];
         [self presentViewController:alert animated:YES completion:nil];
     }
     
-@end
+    @end
