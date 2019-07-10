@@ -82,7 +82,8 @@
     NSString* text = textView.text == nil ? @"" : textView.text;
     
     if (isSelectionType) {
-        NSArray<NSDictionary<NSString *, id> *> *responce = [self.dbManager executeSelectionQuery: text];
+        NSString* errorString;
+        NSArray<NSDictionary<NSString *, id> *> *responce = [self.dbManager executeSelectionQuery: text and: &errorString];
         
         if (responce == nil) {
             [self presentOnErrorAlert];
@@ -108,11 +109,9 @@
         
         [self.navigationController pushViewController:contentViewController animated:YES];
     } else {
-        NSLog(textView.text);
+        NSString* errorMessage = [self.dbManager executeNonSelectQuery: text];
         
-        bool result = [self.dbManager executeNonSelectQuery: text];
-        
-        statusLabel.text = result ? @"SUCCESS" : @"ERROR OCCURED";
+        statusLabel.text = errorMessage == nil ? @"SUCCESS" : errorMessage;
     }
 }
     
