@@ -15,6 +15,6 @@
 #import "FLEXDatabaseManager.h"
 
 @interface FLEXSQLiteDatabaseManager : NSObject <FLEXDatabaseManager>
-    - (NSString *)executeNonSelectQuery:(NSString *)sql;
-    - (NSArray<NSDictionary<NSString *, id> *> *)executeSelectionQuery:(NSString *)sql and: (NSString **)error;
+- (NSString *)executeNonSelectQuery:(NSString *)sql;
+- (NSArray<NSDictionary<NSString *, id> *> *)executeSelectionQuery:(NSString *)sql error:(NSString **)error;
 @end

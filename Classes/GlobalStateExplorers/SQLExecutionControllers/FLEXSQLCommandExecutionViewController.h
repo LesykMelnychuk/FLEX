@@ -10,6 +10,6 @@
 #import "FLEXSQLiteDatabaseManager.h"
 
 @interface FLEXSQLCommandExecutionViewController: UIViewController
-    @property (nonatomic) BOOL isSelectionType;
-    @property (nonatomic) FLEXSQLiteDatabaseManager* dbManager;
+@property (nonatomic) BOOL isSelectionType;
+@property (nonatomic) FLEXSQLiteDatabaseManager* dbManager;
 @end
