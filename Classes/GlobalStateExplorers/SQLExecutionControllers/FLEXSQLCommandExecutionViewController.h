@@ -11,5 +11,5 @@
 
 @interface FLEXSQLCommandExecutionViewController: UIViewController
 @property (nonatomic) BOOL isSelectionType;
-@property (nonatomic) FLEXSQLiteDatabaseManager* dbManager;
+@property (nonatomic) FLEXSQLiteDatabaseManager *dbManager;
 @end

@@ -102,7 +102,7 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
 }
 
 - (NSArray<NSDictionary<NSString *, id> *> *)queryAllDataWithTableName:(NSString *)tableName {
-    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@",tableName];
+    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@", tableName];
     return [self executeQuery:sql];
 }
 
@@ -145,9 +145,9 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
                 int columnIdx = 0;
                 
                 for (columnIdx = 0; columnIdx < columnCount; columnIdx++) {
-                    
                     NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name(pstmt, columnIdx)];
                     id objectValue = [self objectForColumnIndex:columnIdx stmt:pstmt];
+                    
                     [dict setObject:objectValue forKey:columnName];
                 }
                 

@@ -15,9 +15,9 @@
 #import <objc/runtime.h>
 
 @interface FLEXSQLCommandExecutionViewController ()
-@property (nonatomic) UITextView* textView;
-@property (nonatomic) UIButton* submitButton;
-@property (nonatomic) UILabel* statusLabel;
+@property (nonatomic) UITextView *textView;
+@property (nonatomic) UIButton *submitButton;
+@property (nonatomic) UILabel *statusLabel;
 @end
 
 @implementation FLEXSQLCommandExecutionViewController
@@ -39,22 +39,22 @@
 - (void)addOtherUIElementsAndPositionThem {
     if(textView == nil) {
         textView = [UITextView new];
-        textView.backgroundColor = [UIColor colorWithWhite: 0.9 alpha: 1.0];
+        textView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
         textView.textColor = [UIColor blackColor];
         
-        [self.view addSubview: textView];
+        [self.view addSubview:textView];
     }
     
     if(submitButton == nil) {
         submitButton = [UIButton new];
         
-        [submitButton setTitleColor:[UIColor blueColor] forState: UIControlStateNormal];
-        [submitButton setBackgroundColor: [UIColor colorWithWhite: 0.9 alpha: 1.0]];
+        [submitButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [submitButton setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
         
-        [submitButton setTitle: @"Submit" forState: UIControlStateNormal];
-        [submitButton addTarget: self action:@selector(submitPressed) forControlEvents: UIControlEventTouchUpInside];
+        [submitButton setTitle:@"Submit" forState:UIControlStateNormal];
+        [submitButton addTarget:self action:@selector(submitPressed) forControlEvents:UIControlEventTouchUpInside];
         
-        [self.view addSubview: submitButton];
+        [self.view addSubview:submitButton];
     }
     
     if(statusLabel == nil) {
@@ -62,7 +62,7 @@
         
         statusLabel.textAlignment = NSTextAlignmentCenter;
         statusLabel.textColor = [UIColor blackColor];
-        [self.view addSubview: statusLabel];
+        [self.view addSubview:statusLabel];
     }
     
     self.view.backgroundColor = [UIColor whiteColor];
@@ -83,11 +83,11 @@
     NSString* text = textView.text == nil ? @"" : textView.text;
     
     if (isSelectionType) {
-        NSString* errorString;
-        NSArray<NSDictionary<NSString *, id> *> *responce = [self.dbManager executeSelectionQuery: text and: &errorString];
+        NSString *errorString;
+        NSArray<NSDictionary<NSString *, id> *> *responce = [dbManager executeSelectionQuery:text error:&errorString];
         
         if (responce == nil) {
-            [self presentOnErrorAlert: errorString];
+            [self presentOnErrorAlert:errorString];
             return;
         }
         
@@ -95,13 +95,13 @@
         
         for (NSDictionary<NSString *, id> *dict in responce) {
             for (NSString *key in [dict allKeys]) {
-                if ([tables containsObject: key] == false) {
-                    [tables addObject: key];
+                if ([tables containsObject:key] == false) {
+                    [tables addObject:key];
                 }
             }
         }
         
-        FLEXTableContentViewController *contentViewController = [[FLEXTableContentViewController alloc] init];
+        FLEXTableContentViewController *contentViewController = [FLEXTableContentViewController new];
         
         contentViewController.contentsArray = responce;
         contentViewController.columnsArray = [tables copy];
@@ -110,7 +110,7 @@
         
         [self.navigationController pushViewController:contentViewController animated:YES];
     } else {
-        NSString* errorMessage = [self.dbManager executeNonSelectQuery: text];
+        NSString* errorMessage = [self.dbManager executeNonSelectQuery:text];
         
         statusLabel.text = errorMessage == nil ? @"SUCCESS" : errorMessage;
     }
@@ -119,15 +119,15 @@
 
 - (void)presentOnErrorAlert: (NSString *)message
 {
-    UIAlertController * alert = [UIAlertController
+    UIAlertController *alert = [UIAlertController
                                  alertControllerWithTitle:@"SQL Execution error !!!"
-                                 message: message
+                                 message:message
                                  preferredStyle:UIAlertControllerStyleAlert];
 
-    UIAlertAction* okButton = [UIAlertAction
+    UIAlertAction *okButton = [UIAlertAction
                                actionWithTitle:@"Ok"
                                style:UIAlertActionStyleDestructive
-                               handler: nil];
+                               handler:nil];
 
     [alert addAction:okButton];
     [self presentViewController:alert animated:YES completion:nil];
