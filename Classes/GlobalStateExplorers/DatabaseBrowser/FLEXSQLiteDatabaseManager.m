@@ -14,21 +14,21 @@
 static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master WHERE type='table' ORDER BY name";
 
 @implementation FLEXSQLiteDatabaseManager
-    {
-        sqlite3* _db;
-        NSString* _databasePath;
-    }
-    
+{
+    sqlite3* _db;
+    NSString* _databasePath;
+}
+
 - (instancetype)initWithPath:(NSString*)aPath
-    {
-        self = [super init];
-        
-        if (self) {
-            _databasePath = [aPath copy];
-        }
-        return self;
+{
+    self = [super init];
+    if (self) {
+        _databasePath = [aPath copy];
     }
     
+    return self;
+}
+
 - (BOOL)open {
     if (_db) {
         return YES;
@@ -51,7 +51,7 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
     }
     return YES;
 }
-    
+
 - (BOOL)close {
     if (!_db) {
         return YES;
@@ -84,12 +84,12 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
     _db = nil;
     return YES;
 }
-    
-    
+
+
 - (NSArray<NSDictionary<NSString *, id> *> *)queryAllTables {
     return [self executeQuery:QUERY_TABLENAMES_SQL];
 }
-    
+
 - (NSArray<NSString *> *)queryAllColumnsWithTableName:(NSString *)tableName {
     NSString *sql = [NSString stringWithFormat:@"PRAGMA table_info('%@')",tableName];
     NSArray<NSDictionary<NSString *, id> *> *resultArray =  [self executeQuery:sql];
@@ -100,12 +100,12 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
     }
     return array;
 }
-    
+
 - (NSArray<NSDictionary<NSString *, id> *> *)queryAllDataWithTableName:(NSString *)tableName {
     NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@",tableName];
     return [self executeQuery:sql];
 }
-    
+
 - (NSString *)executeNonSelectQuery:(NSString *)sql {
     NSString *error = nil;
     
@@ -115,18 +115,18 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
     if (sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pstmt, NULL) != SQLITE_OK) {
         return [NSString stringWithFormat: @"Prepare failure: %s", sqlite3_errmsg(_db)];
     }
-                
+
     if (sqlite3_step(pstmt) != SQLITE_DONE) {
         return [NSString stringWithFormat: @"Step failure: %s", sqlite3_errmsg(_db)];
     }
-                
+
     sqlite3_finalize(pstmt);
-                
+
     [self close];
-                
+
     return error;
 }
-                
+
 - (NSArray<NSDictionary<NSString *, id> *> *)executeSelectionQuery: (NSString *)sql and: (NSString **)error {
     [self open];
     
@@ -165,11 +165,11 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
     
     return resultArray;
 }
-                
-                
+
+
 #pragma mark -
 #pragma mark - Private
-                
+
 - (NSArray<NSDictionary<NSString *, id> *> *)executeQuery:(NSString *)sql {
     [self open];
     NSMutableArray<NSDictionary<NSString *, id> *> *resultArray = [NSMutableArray array];
@@ -198,10 +198,10 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
     
     return resultArray;
 }
-                
+
 - (id)objectForColumnIndex:(int)columnIdx stmt:(sqlite3_stmt*)stmt {
     int columnType = sqlite3_column_type(stmt, columnIdx);
-                    
+
     id returnValue = nil;
     
     if (columnType == SQLITE_INTEGER) {
@@ -224,7 +224,7 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
     
     return returnValue;
 }
-                
+
 - (NSString *)stringForColumnIndex:(int)columnIdx stmt:(sqlite3_stmt *)stmt {
     
     if (sqlite3_column_type(stmt, columnIdx) == SQLITE_NULL || (columnIdx < 0)) {
@@ -240,21 +240,21 @@ static NSString *const QUERY_TABLENAMES_SQL = @"SELECT name FROM sqlite_master W
     
     return [NSString stringWithUTF8String:c];
 }
-                
- - (NSData *)dataForColumnIndex:(int)columnIdx stmt:(sqlite3_stmt *)stmt {
-     
-     if (sqlite3_column_type(stmt, columnIdx) == SQLITE_NULL || (columnIdx < 0)) {
-         return nil;
-     }
-     
-     const char *dataBuffer = sqlite3_column_blob(stmt, columnIdx);
-     int dataSize = sqlite3_column_bytes(stmt, columnIdx);
-     
-     if (dataBuffer == NULL) {
-         return nil;
-     }
-     
-     return [NSData dataWithBytes:(const void *)dataBuffer length:(NSUInteger)dataSize];
- }
-                
+
+- (NSData *)dataForColumnIndex:(int)columnIdx stmt:(sqlite3_stmt *)stmt {
+
+    if (sqlite3_column_type(stmt, columnIdx) == SQLITE_NULL || (columnIdx < 0)) {
+        return nil;
+    }
+
+    const char *dataBuffer = sqlite3_column_blob(stmt, columnIdx);
+    int dataSize = sqlite3_column_bytes(stmt, columnIdx);
+
+    if (dataBuffer == NULL) {
+        return nil;
+    }
+
+    return [NSData dataWithBytes:(const void *)dataBuffer length:(NSUInteger)dataSize];
+}
+
 @end

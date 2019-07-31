@@ -68,4 +68,14 @@
     [self.navigationController pushViewController:cookieViewController animated:YES];
 }
 
+#pragma mark - FLEXGlobalsEntry
+
++ (NSString *)globalsEntryTitle:(FLEXGlobalsRow)row {
+    return @"🍪  Cookies";
+}
+
++ (UIViewController *)globalsEntryViewController:(FLEXGlobalsRow)row {
+    return [self new];
+}
+
 @end

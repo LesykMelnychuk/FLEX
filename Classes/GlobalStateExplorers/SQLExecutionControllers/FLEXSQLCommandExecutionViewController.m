@@ -15,14 +15,14 @@
 #import <objc/runtime.h>
 
 @interface FLEXSQLCommandExecutionViewController ()
-    @property (nonatomic) UITextView* textView;
-    @property (nonatomic) UIButton* submitButton;
-    @property (nonatomic) UILabel* statusLabel;
-    @end
+@property (nonatomic) UITextView* textView;
+@property (nonatomic) UIButton* submitButton;
+@property (nonatomic) UILabel* statusLabel;
+@end
 
 @implementation FLEXSQLCommandExecutionViewController
-    @synthesize isSelectionType, dbManager, textView, submitButton, statusLabel;
-    
+@synthesize isSelectionType, dbManager, textView, submitButton, statusLabel;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -31,11 +31,11 @@
     
     [self addOtherUIElementsAndPositionThem];
 }
-    
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     [self addOtherUIElementsAndPositionThem];
 }
-    
+
 - (void)addOtherUIElementsAndPositionThem {
     if(textView == nil) {
         textView = [UITextView new];
@@ -78,7 +78,7 @@
     statusLabel.frame = CGRectMake(sideMargin, textView.frame.origin.y + textViewHeight + sideMargin, width, statusLabelHeight);
     submitButton.frame = CGRectMake(sideMargin, statusLabel.frame.origin.y + statusLabelHeight + sideMargin, width, submitButtonHeight);
 }
-    
+
 - (void)submitPressed {
     NSString* text = textView.text == nil ? @"" : textView.text;
     
@@ -115,22 +115,22 @@
         statusLabel.text = errorMessage == nil ? @"SUCCESS" : errorMessage;
     }
 }
-    
-    
+
+
 - (void)presentOnErrorAlert: (NSString *)message
-    {
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"SQL Execution error !!!"
-                                     message: message
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* okButton = [UIAlertAction
-                                   actionWithTitle:@"Ok"
-                                   style:UIAlertActionStyleDestructive
-                                   handler: nil];
-        
-        [alert addAction:okButton];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    
-    @end
+{
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"SQL Execution error !!!"
+                                 message: message
+                                 preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* okButton = [UIAlertAction
+                               actionWithTitle:@"Ok"
+                               style:UIAlertActionStyleDestructive
+                               handler: nil];
+
+    [alert addAction:okButton];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+@end
